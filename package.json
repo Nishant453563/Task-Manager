@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "Full-stack Team Task Manager",
   "scripts": {
+    "install-all": "npm install && npm install --prefix client && npm install --prefix server",
+    "build": "npm run build --prefix client",
+    "start": "NODE_ENV=production node server/index.js",
     "client": "npm run dev --prefix client",
     "server": "npm run dev --prefix server",
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
   },
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^8.2.2"
   }
 }
