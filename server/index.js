@@ -50,16 +50,25 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/team-task-manager';
 
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('✅ Connected to MongoDB successfully');
-    app.listen(PORT, () => {
-      console.log(`🚀 Server is running on port ${PORT}`);
-      console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    });
-  })
-  .catch(err => {
-    console.error('❌ Failed to connect to MongoDB:');
-    console.error(err.message);
-    process.exit(1); // Force the process to fail so Render shows a clear error
+// In-Memory Database Mode (No MongoDB Atlas Required)
+const startServer = () => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running in IN-MEMORY MODE on port ${PORT}`);
+    console.log(`⚠️  Warning: Data will be lost on server restart.`);
   });
+};
+
+if (MONGODB_URI.includes('localhost') || !process.env.MONGODB_URI) {
+  console.log('💡 No remote MongoDB URI found. Starting in In-Memory mode...');
+  startServer();
+} else {
+  mongoose.connect(MONGODB_URI)
+    .then(() => {
+      console.log('✅ Connected to MongoDB successfully');
+      startServer();
+    })
+    .catch(err => {
+      console.error('❌ Failed to connect to MongoDB. Falling back to In-Memory mode...');
+      startServer();
+    });
+}
