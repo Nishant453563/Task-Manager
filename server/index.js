@@ -52,11 +52,14 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/team-t
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
-    console.log('Connected to MongoDB');
+    console.log('✅ Connected to MongoDB successfully');
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`🚀 Server is running on port ${PORT}`);
+      console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     });
   })
   .catch(err => {
-    console.error('Failed to connect to MongoDB', err);
+    console.error('❌ Failed to connect to MongoDB:');
+    console.error(err.message);
+    process.exit(1); // Force the process to fail so Render shows a clear error
   });
