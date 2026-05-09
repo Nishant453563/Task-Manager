@@ -60,12 +60,21 @@ A professional, full-stack collaborative task management system built with the M
    npm run dev
    ```
 
-## 🚀 Deployment (Railway)
+## 🚀 Deployment (Render.com)
 
-1. Connect your GitHub repository to Railway.
-2. Add environment variables in the Railway dashboard.
-3. Railway will automatically detect the `server` and `client` folders (you may need to configure the build commands if deploying as a monorepo).
-4. Recommended: Deploy Backend first, then Frontend. Update the frontend `vite.config.js` or environment variables to point to the deployed backend URL.
+This project is optimized for deployment on **Render.com** using a unified build process.
+
+1. **Create a Web Service**: Link your GitHub repository to Render.
+2. **Environment Variables**: Add the following in the **Environment** tab:
+   - `MONGODB_URI`: Your MongoDB Atlas connection string.
+   - `JWT_SECRET`: A secure random string for tokens.
+   - `NODE_ENV`: `production`
+3. **Build Settings**:
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+4. **Root Directory**: Keep as the repository root (empty or `/`).
+
+Render will automatically build the frontend and serve it through the backend server.
 
 ## 📄 License
 MIT
