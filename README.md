@@ -15,14 +15,14 @@ A professional, full-stack collaborative task management system built with the M
 ## 🛠️ Tech Stack
 
 - **Frontend**: React, Vite, Tailwind CSS, Lucide React, Framer Motion, Axios
-- **Backend**: Node.js, Express, MongoDB, Mongoose
+- **Backend**: Node.js, Express
+- **Database**: In-Memory Data Store (Optimized for Demo)
 - **Security**: JWT, BcryptJS, Helmet, CORS
 
 ## 📦 Getting Started
 
 ### Prerequisites
 - Node.js (v18+)
-- MongoDB Atlas account or local MongoDB instance
 
 ### Installation
 
@@ -66,7 +66,6 @@ This project is optimized for deployment on **Render.com** using a unified build
 
 1. **Create a Web Service**: Link your GitHub repository to Render.
 2. **Environment Variables**: Add the following in the **Environment** tab:
-   - `MONGODB_URI`: Your MongoDB Atlas connection string.
    - `JWT_SECRET`: A secure random string for tokens.
    - `NODE_ENV`: `production`
 3. **Build Settings**:
