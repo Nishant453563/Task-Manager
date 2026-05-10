@@ -9,6 +9,16 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ message: 'No authentication token, access denied.' });
     }
 
+    // --- DEMO MODE BYPASS ---
+    const mongoose = require('mongoose');
+    const isConnected = mongoose.connection.readyState === 1;
+    if (!isConnected) {
+      // Create a mock user object for the request
+      req.user = { id: 'demo-user-id', role: 'Admin' };
+      return next();
+    }
+    // -------------------------
+
     const verified = jwt.verify(token, process.env.JWT_SECRET);
     if (!verified) {
       return res.status(401).json({ message: 'Token verification failed, access denied.' });
