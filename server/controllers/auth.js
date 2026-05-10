@@ -50,6 +50,24 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    const { email, password } = req.body;
+
+    // --- DEMO MODE BYPASS (If no database is connected) ---
+    const isConnected = mongoose.connection.readyState === 1;
+    if (!isConnected) {
+      console.log('💡 Demo Mode: Bypassing login for email:', email);
+      return res.json({
+        token: 'demo-token-' + Date.now(),
+        user: {
+          id: 'demo-user-id',
+          name: 'Demo Admin',
+          email: email,
+          role: 'Admin'
+        }
+      });
+    }
+    // -----------------------------------------------------
+
     const schema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().required()
@@ -57,8 +75,6 @@ exports.login = async (req, res) => {
 
     const { error } = schema.validate(req.body);
     if (error) return res.status(400).json({ message: error.details[0].message });
-
-    const { email, password } = req.body;
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -82,12 +98,23 @@ exports.login = async (req, res) => {
       }
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error during login' });
   }
 };
 
 exports.getMe = async (req, res) => {
   try {
+    const isConnected = mongoose.connection.readyState === 1;
+    if (!isConnected) {
+      return res.json({
+        id: 'demo-user-id',
+        name: 'Demo Admin',
+        email: 'admin@demo.com',
+        role: 'Admin'
+      });
+    }
+
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {

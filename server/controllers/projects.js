@@ -31,6 +31,28 @@ exports.createProject = async (req, res) => {
 
 exports.getProjects = async (req, res) => {
   try {
+    const isConnected = require('mongoose').connection.readyState === 1;
+    if (!isConnected) {
+      return res.json([
+        {
+          _id: 'p1',
+          name: 'Global Expansion',
+          description: 'Project to expand operations globally.',
+          members: [{ name: 'John Doe', email: 'john@example.com' }],
+          createdBy: { name: 'Admin', email: 'admin@demo.com' },
+          createdAt: new Date()
+        },
+        {
+          _id: 'p2',
+          name: 'Mobile App Revamp',
+          description: 'UI/UX overhaul of the existing mobile app.',
+          members: [{ name: 'Jane Smith', email: 'jane@example.com' }],
+          createdBy: { name: 'Admin', email: 'admin@demo.com' },
+          createdAt: new Date()
+        }
+      ]);
+    }
+
     let query = {};
     if (req.user.role !== 'Admin') {
       query = {
